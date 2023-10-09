@@ -1,0 +1,13 @@
+services:
+  db:
+    build: ./db
+    env_file:
+      - ./db/.env
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/scripts:/docker-entrypoint-initdb.d
+      - ./db/data:/data
+volumes:
+  pgdata:
