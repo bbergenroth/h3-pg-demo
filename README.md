@@ -1196,7 +1196,67 @@ from tree_cover_h3_2021;
   ]
 }
 ```
+#### A random H3 index
 
+```
+select json_build_object(
+    'type', 'FeatureCollection',
+    'features', json_agg(ST_AsGeoJSON(a.*)::json))
+from (
+    select h3_index::bigint as id, h3_cell_to_boundary_geometry(h3_index), mean_tree_cover_2021 
+    from tree_cover_h3_2021 limit 1) a;
+
+```
+
+```geojson
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -73.969360627,
+              40.848119896
+            ],
+            [
+              -73.969661793,
+              40.847985766
+            ],
+            [
+              -73.969652001,
+              40.847733931
+            ],
+            [
+              -73.969341046,
+              40.847616225
+            ],
+            [
+              -73.969039882,
+              40.847750353
+            ],
+            [
+              -73.969049671,
+              40.848002189
+            ],
+            [
+              -73.969360627,
+              40.848119896
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": 626740321767829503,
+        "mean_tree_cover_2021": 0.34
+      }
+    }
+  ]
+}
+```
 ---
 
 ### Useful links/references
