@@ -1256,6 +1256,7 @@ from (
     }
   ]
 }
+```
 
 ```
 h3=# \d places 
@@ -1280,6 +1281,44 @@ h3=# select count(*) from places;
 +-------+
 ```
 
+#### Cells in Manhattan
+```
+select t.h3_index, t.mean_tree_cover_2021 
+from public.tree_cover_h3_2021 t
+    join lateral (
+        select id, name, public.h3_polygon_to_cells(geometry, 11) h3_index from places) p
+    using (h3_index) 
+where p.name = 'Manhattan' and mean_tree_cover_2021 > 0;
+```
+
+```
++--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                                                                          QUERY PLAN                                                                          |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Nested Loop  (cost=0.70..1479.25 rows=581 width=16) (actual time=139.790..206.494 rows=11735 loops=1)                                                        |
+|   ->  ProjectSet  (cost=0.28..7.75 rows=1000 width=48) (actual time=139.746..159.188 rows=40506 loops=1)                                                     |
+|         ->  Index Scan using places_name_idx on places  (cost=0.28..2.50 rows=1 width=3453) (actual time=0.028..0.030 rows=1 loops=1)                  |
+|               Index Cond: (name = 'Manhattan'::text)                                                                                                         |
+|   ->  Index Only Scan using tree_cover_h3_2021_pkey on tree_cover_h3_2021 t  (cost=0.42..1.45 rows=1 width=16) (actual time=0.001..0.001 rows=0 loops=40506) |
+|         Index Cond: ((h3_index = (h3_polygon_to_cells(places.geometry, 11))) AND (mean_tree_cover_2021 > '0'::double precision))                          |
+|         Heap Fetches: 0                                                                                                                                      |
+| Planning Time: 0.622 ms                                                                                                                                      |
+| Execution Time: 206.977 ms                                                                                                                                   |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+```
+```
++-----------------+----------------------+
+|    h3_index     | mean_tree_cover_2021 |
++-----------------+----------------------+
+| 8b2a1008daabfff |                14.99 |
+| 8b2a1008b353fff |                 4.69 |
+| 8b2a100890e6fff |                  0.1 |
+| 8b2a100abd86fff |                 1.91 |
+| 8b2a100d2a15fff |                26.99 |
+| 8b2a100d0c93fff |                25.52 |
+| 8b2a1008d6a5fff |                33.61 |
+...
+(11735 rows)
 ```
 ---
 
