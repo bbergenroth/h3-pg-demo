@@ -1,4 +1,13 @@
 services:
+  tile:
+    image: pramsey/pg_tileserv
+    restart: unless-stopped
+    ports:
+      - 7800:7800
+    env_file:
+      - ./db/.env
+    depends_on:
+      - db
   db:
     build: ./db
     env_file:
