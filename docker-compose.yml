@@ -18,5 +18,12 @@ services:
       - pgdata:/var/lib/postgresql/data
       - ./db/scripts:/docker-entrypoint-initdb.d
       - ./db/data:/data
+  web:
+    image: nginx:stable-alpine
+    ports:
+      - 80:80
+    volumes:
+      - ./web/index.html:/usr/share/nginx/html/index.html
+
 volumes:
   pgdata:
