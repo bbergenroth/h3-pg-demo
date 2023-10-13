@@ -1323,7 +1323,7 @@ where p.name = 'Manhattan' and mean_tree_cover_2021 > 0;
 (11735 rows)
 ```
 
-### Turn it into tiles
+#### Turn it into tiles
 
 [Tile function](db/scripts/004_funcs.sql)
 
