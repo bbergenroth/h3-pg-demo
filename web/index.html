@@ -24,6 +24,10 @@
 <body>
     <div id="map"></div>
     <script>
+        let params = new URLSearchParams(window.location.search);
+        let name = params.get('name');
+        tile_url = name ? base_url + '?name=' + name : base_url;
+
         const map = new maplibregl.Map({
             container: 'map',
             style: 'https://api.maptiler.com/maps/backdrop/style.json?key=',
