@@ -1,4 +1,4 @@
-create or replace function manhattan_trees(z integer, x integer, y integer) returns bytea as 
+create or replace function trees(z integer, x integer, y integer, name text default 'Manhattan') returns bytea as 
 $$
 declare
     result bytea;
@@ -9,9 +9,9 @@ begin
             st_transform(h3_cell_to_boundary_geometry(h3_index)::geometry(polygon, 4326), 3857) as geom
         from tree_cover_h3_2021 t
             join lateral (
-                select id, name, h3_polygon_to_cells(geometry, 11) h3_index from places) p
+                select p.id, p.name, h3_polygon_to_cells(geometry, 11) h3_index from places p) p
             using (h3_index) 
-        where p.name ='Manhattan' and mean_tree_cover_2021 > 0
+        where p.name = trees.name and t.mean_tree_cover_2021 > 0
     ),
     mvtgeom as (
       select st_asmvtgeom(h3.geom, bounds.geom) as geom, h3.name, h3.h3_index, h3.mean_tree_cover_2021

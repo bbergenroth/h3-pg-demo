@@ -1281,6 +1281,8 @@ h3=# select count(*) from places;
 +-------+
 ```
 
+[Check it out!](http://localhost:7800/public.places.html#10.04/40.7834/-73.9248)
+
 #### Cells in Manhattan
 ```
 select t.h3_index, t.mean_tree_cover_2021 
@@ -1320,6 +1322,13 @@ where p.name = 'Manhattan' and mean_tree_cover_2021 > 0;
 ...
 (11735 rows)
 ```
+
+### Turn it into tiles
+
+[Tile function](db/scripts/004_funcs.sql)
+
+[Check it out!](http://localhost/)
+
 ---
 
 ### Useful links/references

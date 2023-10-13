@@ -32,14 +32,14 @@
         });
 
         map.on('load', () => {
-            map.addSource('manhattan_trees', {
+            map.addSource('trees', {
                 type: 'vector',
-                tiles: ['http://localhost:8888/public.manhattan_trees/{z}/{x}/{y}.pbf']
+                tiles: ['http://localhost:8888/public.trees/{z}/{x}/{y}.pbf']
             });
             map.addLayer({
-                id: "manhattan_trees",
+                id: "trees",
                 type: "fill",
-                source: "manhattan_trees",
+                source: "trees",
                 "source-layer": "default",
 
                 paint: {
@@ -53,23 +53,23 @@
                         75, '#607c3c',
                         100, '#013220'
                     ],
-                    'fill-opacity': 0.8
+                    'fill-opacity': 0.5
                 },
                 'filter': ['==', '$type', 'Polygon']
             });
 
-            map.on('click', 'manhattan_trees', (e) => {
+            map.on('click', 'trees', (e) => {
                 new maplibregl.Popup()
                     .setLngLat(e.lngLat)
                     .setHTML(e.features[0].properties.mean_tree_cover_2021)
                     .addTo(map);
             });
 
-            map.on('mouseenter', 'manhattan_trees', () => {
+            map.on('mouseenter', 'trees', () => {
                 map.getCanvas().style.cursor = 'pointer';
             });
 
-            map.on('mouseleave', 'manhattan_trees', () => {
+            map.on('mouseleave', 'trees', () => {
                 map.getCanvas().style.cursor = '';
             });
         });
