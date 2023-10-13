@@ -24,6 +24,13 @@ services:
       - 80:80
     volumes:
       - ./web/index.html:/usr/share/nginx/html/index.html
-
+  cache:
+    image: eeacms/varnish
+    ports:
+      - "8888:6081"
+    env_file:
+      - ./web/.env
+    depends_on:
+      - tile
 volumes:
   pgdata:
