@@ -57,6 +57,21 @@
                 },
                 'filter': ['==', '$type', 'Polygon']
             });
+
+            map.on('click', 'manhattan_trees', (e) => {
+                new maplibregl.Popup()
+                    .setLngLat(e.lngLat)
+                    .setHTML(e.features[0].properties.mean_tree_cover_2021)
+                    .addTo(map);
+            });
+
+            map.on('mouseenter', 'manhattan_trees', () => {
+                map.getCanvas().style.cursor = 'pointer';
+            });
+
+            map.on('mouseleave', 'manhattan_trees', () => {
+                map.getCanvas().style.cursor = '';
+            });
         });
     </script>
 </body>
