@@ -34,7 +34,7 @@
         map.on('load', () => {
             map.addSource('trees', {
                 type: 'vector',
-                tiles: ['http://localhost:8888/public.trees/{z}/{x}/{y}.pbf']
+                tiles: ['http://localhost:8888/public.trees/{z}/{x}/{y}.pbf?name=Manhattan']
             });
             map.addLayer({
                 id: "trees",
