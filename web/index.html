@@ -24,6 +24,7 @@
 <body>
     <div id="map"></div>
     <script>
+        let base_url = 'http://localhost:8888/public.trees/{z}/{x}/{y}.pbf'
         let params = new URLSearchParams(window.location.search);
         let name = params.get('name');
         tile_url = name ? base_url + '?name=' + name : base_url;
@@ -38,7 +39,7 @@
         map.on('load', () => {
             map.addSource('trees', {
                 type: 'vector',
-                tiles: ['http://localhost:8888/public.trees/{z}/{x}/{y}.pbf?name=Manhattan']
+                tiles: [tile_url]
             });
             map.addLayer({
                 id: "trees",
