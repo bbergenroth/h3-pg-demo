@@ -40,6 +40,8 @@
       });
 
       map.on("load", () => {
+        map.addControl(new maplibregl.NavigationControl(), "top-right");
+        
         map.addSource("trees", {
           type: "vector",
           tiles: [tile_url],
