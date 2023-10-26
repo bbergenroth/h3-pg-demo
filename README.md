@@ -58,27 +58,27 @@ h3_grid_path_cells
 
 #### How many hexagons at each zoom level?
 ```
-h3=# select n, h3_get_num_cells(n) from generate_series(0, 15, 1) n;
-+----+------------------+
-| n  | h3_get_num_cells |
-+----+------------------+
-|  0 |              122 |
-|  1 |              842 |
-|  2 |             5882 |
-|  3 |            41162 |
-|  4 |           288122 |
-|  5 |          2016842 |
-|  6 |         14117882 |
-|  7 |         98825162 |
-|  8 |        691776122 |
-|  9 |       4842432842 |
-| 10 |      33897029882 |
-| 11 |     237279209162 |
-| 12 |    1660954464122 |
-| 13 |   11626681248842 |
-| 14 |   81386768741882 |
-| 15 |  569707381193162 |
-+----+------------------+
+h3=# select zoom, to_char(h3_get_num_cells(zoom),'999,999,999,999,999') cells from generate_series(0, 15, 1) zoom;
++------+----------------------+
+| zoom |        cells         |
++------+----------------------+
+|    0 |                  122 |
+|    1 |                  842 |
+|    2 |                5,882 |
+|    3 |               41,162 |
+|    4 |              288,122 |
+|    5 |            2,016,842 |
+|    6 |           14,117,882 |
+|    7 |           98,825,162 |
+|    8 |          691,776,122 |
+|    9 |        4,842,432,842 |
+|   10 |       33,897,029,882 |
+|   11 |      237,279,209,162 |
+|   12 |    1,660,954,464,122 |
+|   13 |   11,626,681,248,842 |
+|   14 |   81,386,768,741,882 |
+|   15 |  569,707,381,193,162 |
++------+----------------------+
 (16 rows)
 ```
 #### Example data
@@ -112,6 +112,16 @@ h3=# select * from tree_cover_h3_2021 limit 3;
 | 8b2a100d5a24fff |                  2.1 |
 +-----------------+----------------------+
 ```
+
+```
+h3=# select h3_get_resolution('8b2a1008562afff');
++-------------------+
+| h3_get_resolution |
++-------------------+
+|                11 |
++-------------------+
+(1 row)
+``````
 
 #### The tree cover area
 
@@ -1287,7 +1297,7 @@ h3=# select count(*) from places;
 ```
 select t.h3_index, t.mean_tree_cover_2021 
 from public.tree_cover_h3_2021 t
-    join lateral (
+    join (
         select id, name, public.h3_polygon_to_cells(geometry, 11) h3_index from places) p
     using (h3_index) 
 where p.name = 'Manhattan' and mean_tree_cover_2021 > 0;

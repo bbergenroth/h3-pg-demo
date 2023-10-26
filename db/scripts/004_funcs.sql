@@ -8,7 +8,7 @@ begin
         select t.h3_index, t.mean_tree_cover_2021, p.name, p.id,
             st_transform(h3_cell_to_boundary_geometry(h3_index)::geometry(polygon, 4326), 3857) as geom
         from tree_cover_h3_2021 t
-            join lateral (
+            join (
                 select p.id, p.name, h3_polygon_to_cells(geometry, 11) h3_index from places p) p
             using (h3_index) 
         where p.name = trees.name and t.mean_tree_cover_2021 > 0
