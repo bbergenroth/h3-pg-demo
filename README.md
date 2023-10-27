@@ -185,6 +185,17 @@ from (
 }
 ```
 
+#### Benchmark (creating a table of the polygons)
+```
+h3=# create table h3_w_geos as 
+  select h3_index, h3_cell_to_boundary_geometry(h3_index)::geometry(polygon, 4326) as geometry 
+  from tree_cover_h3_2021;
+
+SELECT 968288
+
+Time: 2976.732 ms (00:02.977)
+```
+
 #### The tree cover area
 
 ```
